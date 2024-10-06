@@ -116,7 +116,7 @@ binding_modes:
   - name: 'pause'
     keybindings:
       - commands: ['wm-disable-binding-mode --name pause']
-        bindings: ['escape']
+        bindings: ['ctrl+alt+right', 'ctrl+alt+left', 'alt+escape']
 
 keybindings:
   # Shift focus in a given direction.
