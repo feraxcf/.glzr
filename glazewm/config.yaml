@@ -145,9 +145,9 @@ keybindings:
   - commands: ['resize --width +2%']
     bindings: ['alt+home']
   - commands: ['resize --height +2%']
-    bindings: ['alt+shift+end']
-  - commands: ['resize --height -2%']
     bindings: ['alt+shift+home']
+  - commands: ['resize --height -2%']
+    bindings: ['alt+shift+end']
 
   # As an alternative to the resize keybindings above, resize mode enables
   # resizing via arrow keys or HJKL. The binding mode is defined above with
