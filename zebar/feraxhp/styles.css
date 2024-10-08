@@ -68,15 +68,23 @@ body,
   margin-right: 20px;
 }
 
+.user,
 .workspaces {
   display: flex;
   align-items: center;
 }
 
+.user {
+  height: 20px;
+  margin-right: 8px;
+  margin-left: -20px;
+}
+
 .workspace {
   background: rgb(30, 30, 46);
   margin-right: 4px;
-  padding: 4px 8px;
+  padding: 2px 4px;
+  padding-bottom: 0px;
   color: rgb(187, 153, 228);
   border: none;
   border-radius: 30%;
