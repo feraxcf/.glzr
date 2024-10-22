@@ -32,7 +32,7 @@
       import * as zebar from 'https://esm.sh/zebar@2';
 
       const providers = zebar.createProviderGroup({
-        network: { type: 'network' },
+        network: { type: 'network', refreshInterval: 500 },
         glazewm: { type: 'glazewm' },
         cpu: { type: 'cpu', refreshInterval: 2500 },
         date: { type: 'date', formatting: 'EEE d MMM t' },
@@ -54,28 +54,28 @@
         function getNetworkIcon(networkOutput) {
           switch (networkOutput.defaultInterface?.type) {
             case 'ethernet':
-              return <i className="nf nf-md-ethernet_cable"></i>;
+              return <i className="nt good nf nf-md-ethernet_cable"></i>;
             case 'wifi':
               if (networkOutput.defaultGateway?.signalStrength >= 80) {
-                return <i className="nf nf-md-wifi_strength_4"></i>;
+                return <i className="nt max nf nf-md-wifi_strength_4"></i>;
               } else if (
                 networkOutput.defaultGateway?.signalStrength >= 65
               ) {
-                return <i className="nf nf-md-wifi_strength_3"></i>;
+                return <i className="nt med nf nf-md-wifi_strength_3"></i>;
               } else if (
                 networkOutput.defaultGateway?.signalStrength >= 40
               ) {
-                return <i className="nf nf-md-wifi_strength_2"></i>;
+                return <i className="nt some nf nf-md-wifi_strength_2"></i>;
               } else if (
                 networkOutput.defaultGateway?.signalStrength >= 25
               ) {
-                return <i className="nf nf-md-wifi_strength_1"></i>;
+                return <i className="nt bad nf nf-md-wifi_strength_1"></i>;
               } else {
-                return <i className="nf nf-md-wifi_strength_outline"></i>;
+                return <i className="nt worse nf nf-md-wifi_strength_outline"></i>;
               }
             default:
               return (
-                <i className="nf nf-md-wifi_strength_off_outline"></i>
+                <i className="nt nf nf-md-wifi_strength_off_outline"></i>
               );
           }
         }

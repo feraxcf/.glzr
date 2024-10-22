@@ -51,7 +51,7 @@ body,
 
 .center {
   justify-self: center;
-  color: rgb(185, 233, 181);
+  color: #f5e0dc;
 }
 
 .right {
@@ -129,3 +129,10 @@ body,
   left: -8px;
   top: 3px;
 }
+
+.nt        { color: #89b4fa; }
+.nt .max   { color: #a6e3a1; }
+.nt .med   { color: #f9e2af; }
+.nt .some  { color: #fab387; }
+.nt .bad   { color: #eba0ac; }
+.nt .worse { color: #f38ba8; }
