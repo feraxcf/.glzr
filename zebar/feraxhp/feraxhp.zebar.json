@@ -6,9 +6,8 @@
   "focused": false,
   "resizable": false,
   "transparent": false,
-  "presets": [
+  "defaultPlacements": [
     {
-      "name": "feraxps",
       "anchor": "top_left",
       "offsetX": "0px",
       "offsetY": "0px",
