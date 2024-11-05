@@ -83,14 +83,14 @@
         // Get icon to show for how much of the battery is charged.
         function getBatteryIcon(batteryOutput) {
           if (batteryOutput.chargePercent > 80)
-            return <i className="nf med nf-fa-battery_4"></i>;
+            return <i className="nf max nf-fa-battery_4"></i>;
           if (batteryOutput.chargePercent > 50)
-            return <i className="nf some nf-fa-battery_3"></i>;
+            return <i className="nf med nf-fa-battery_3"></i>;
           if (batteryOutput.chargePercent > 30)
-            return <i className="nf bad nf-fa-battery_2"></i>;
+            return <i className="nf some nf-fa-battery_2"></i>;
           if (batteryOutput.chargePercent > 10)
-            return <i className="bt nf worse nf-fa-battery_1"></i>;
-          return <i className="nf max nf-fa-battery_0"></i>;
+            return <i className="nf bad nf-fa-battery_1"></i>;
+          return <i className="nf worse nf-fa-battery_0"></i>;
         }
 
         // Get icon to show for current weather status.
