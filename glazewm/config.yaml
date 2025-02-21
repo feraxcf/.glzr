@@ -208,9 +208,9 @@ keybindings:
 
   # Focus the next/previous workspace defined in `workspaces` config.
   - commands: ['focus --next-workspace']
-    bindings: ['alt+s', 'ctrl+alt+right']
+    bindings: ['ctrl+alt+right']
   - commands: ['focus --prev-workspace']
-    bindings: ['alt+a', 'ctrl+alt+left']
+    bindings: ['ctrl+alt+left']
   
   # Focus the next/previus active workspace
   - commands: ['focus --next-active-workspace']
@@ -220,7 +220,7 @@ keybindings:
 
   # Focus the workspace that last had focus.
   - commands: ['focus --recent-workspace']
-    bindings: ['alt+d']
+    bindings: ['alt+tab']
 
   # Change focus to a workspace defined in `workspaces` config.
   - commands: ['focus --workspace 1']
@@ -244,14 +244,14 @@ keybindings:
 
   # Move the focused window's parent workspace to a monitor in a given
   # direction.
-  - commands: ['move-workspace --direction left']
-    bindings: ['alt+shift+a']
-  - commands: ['move-workspace --direction right']
-    bindings: ['alt+shift+f']
-  - commands: ['move-workspace --direction up']
-    bindings: ['alt+shift+d']
-  - commands: ['move-workspace --direction down']
-    bindings: ['alt+shift+s']
+  # - commands: ['move-workspace --direction left']
+  #   bindings: ['alt+shift+a']
+  # - commands: ['move-workspace --direction right']
+  #   bindings: ['alt+shift+f']
+  # - commands: ['move-workspace --direction up']
+  #   bindings: ['alt+shift+d']
+  # - commands: ['move-workspace --direction down']
+  #   bindings: ['alt+shift+s']
 
   # Move focused window to a workspace defined in `workspaces` config.
   - commands: ['move --workspace 1', 'focus --workspace 1']
