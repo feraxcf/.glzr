@@ -13,6 +13,7 @@ const providers = zebar.createProviderGroup({
   battery: { type: 'battery', refreshInterval: 100 },
   memory: { type: 'memory' },
   weather: { type: 'weather' },
+  song: { type: 'media' },
 });
 
 createRoot(document.getElementById('root')).render(<App />);
@@ -132,6 +133,14 @@ function App() {
             className="user" 
             style = {(song && song.imageSrc && !song.isPaused) ? { animation: "rotate 5s linear infinite" } : {}}
             src={(song && song.imageSrc) ? song.imageSrc : "https://avatars.githubusercontent.com/u/116177764?v=4"}
+            onClick={() => { 
+                try {
+                    fetch('http://localhost:4343/api/v1/toggle-play', {
+                        method: 'POST',
+                        headers: { 'accept': 'application/json' },
+                    });
+                } catch (error) { console.info('Is a song being played?:', error); }
+            }}
         ></img>
         {song && (
           <div className="song">
@@ -148,7 +157,7 @@ function App() {
               </div>
           </div>
         )}
-        
+        {/* 
         {output.glazewm && (
           <div className="workspaces">
             {output.glazewm.currentWorkspaces.map(workspace => (
@@ -165,11 +174,35 @@ function App() {
               </button>
             ))}
           </div>
-        )}
+        )} */}
       </div>
 
       <div className="center">
-          {output.date?.formatted}
+          <div className="hour-wrapper">
+              <div className="hour">{output.date?.formatted}</div>
+              {output.glazewm && (
+                  <div className="wks">
+                      {Array.from({ length: 9 }, (_, i) => (i + 1).toString()).map(workspaceName => {
+                            const workspace = output.glazewm.currentWorkspaces.find(ws => ws.name === workspaceName);
+                            const wks = {
+                                name: workspaceName,
+                                hasFocus: workspace?.hasFocus ?? false,
+                                isDisplayed: workspace? true : false,
+                            }
+                    
+                            return (
+                                <button
+                                    className={`wk ${wks.hasFocus ? 'sel' : ''} ${wks.isDisplayed ? 'act' : ''}`}
+                                    onClick={() => output.glazewm.runCommand(
+                                        `focus --workspace ${wks.name}`,
+                                    )}
+                                    key={wks.name}
+                                ></button>
+                            );
+                        })}
+                  </div>
+              )}
+          </div>
       </div>
 
       <div className="right">
