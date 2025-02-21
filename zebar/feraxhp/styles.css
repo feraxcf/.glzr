@@ -13,6 +13,7 @@ body {
   color: rgb(187, 153, 228);
   font-family: ui-monospace, monospace;
   font-size: 12px;
+  overflow: hidden;
 }
 
 html,
@@ -77,8 +78,18 @@ body,
 
 .user {
   height: 20px;
+  border-radius: 99999999px;
   margin-right: 8px;
   margin-left: -20px;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .workspace {
@@ -138,3 +149,47 @@ body,
 .some  { color: #fab387; }
 .bad   { color: #eba0ac; }
 .worse { color: #f38ba8; }
+
+.song {
+  margin-right: 6px;
+  max-height: 28px;
+  height: 100%;
+  max-width: 20ch;
+  min-width: 15ch;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  display: inline-grid;
+  overflow: hidden;
+}
+
+.title {
+  max-height: 28px;
+  text-wrap-mode: nowrap;
+}
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.progress {
+  width: 100%;
+  height: 2px;
+  background-color: #4f4f7a;
+  overflow: hidden;
+}
+
+.bar {
+  max-width: 100%;
+  height: 2px;
+  border-radius: 99999999px;
+  background-color: #a6e3a1;
+}
+
+.bar.paused {
+  background-color: #fab387;
+}
