@@ -158,8 +158,10 @@ body,
   cursor: default;
 }
 
+.hour,
 .title {
-  max-height: 28px;
+  height: 1lh;
+  text-align: center;
   text-wrap-mode: nowrap;
 }
 
@@ -203,10 +205,6 @@ body,
   width: 100%;
   padding: 2px 4px 0;
   cursor: default;
-}
-
-.hour {
-  text-align: center;
 }
 
 .wks {
