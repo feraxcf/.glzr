@@ -4,6 +4,7 @@ import React, {
 } from 'https://esm.sh/react@18?dev';
 import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
 import * as zebar from 'https://esm.sh/zebar@2';
+import dateformat from 'https://esm.sh/dateformat@4';
 
 const providers = zebar.createProviderGroup({
   network: { type: 'network', refreshInterval: 500 },
@@ -129,6 +130,13 @@ function App() {
     }
     return 0;
   }
+  
+  function copyHourToClipboard() {
+    const date = dateformat(new Date(), 'dd.mm.yy');
+    
+    console.warn('hour:', date);
+    navigator.clipboard.writeText(date);
+  }
 
   return (
     <div className="app">
@@ -183,7 +191,7 @@ function App() {
 
       <div className="center">
           <div className="hour-wrapper">
-              <div className="hour">{output.date?.formatted}</div>
+              <div className="hour" onClick={copyHourToClipboard}>{output.date?.formatted ?? "EEE d MMM t"}</div>
               {output.glazewm && (
                   <div className="wks">
                       {Array.from({ length: 9 }, (_, i) => (i + 1).toString()).map(workspaceName => {
