@@ -26,14 +26,18 @@ function App() {
       providers.onOutput(() => setOutput(providers.outputMap));
 
       const fetchSong = async () => {
-      try {
-          const response = await fetch('http://localhost:4343/api/v1/song', {
-          method: 'GET',
-          headers: { 'accept': 'application/json' },
-          });
-          const data = await response.json();
-          setSong(data);
-      } catch (error) { console.info('Is a song being played?:', error); }
+        try {
+            const response = await fetch('http://localhost:4343/api/v1/song', {
+            method: 'GET',
+            headers: { 'accept': 'application/json' },
+            });
+            const data = await response.json();
+            
+            setSong(data);
+        } catch (error) { 
+            console.info('Is a song being played?:', error); 
+            setSong(null); 
+        }
       };
 
       fetchSong();
