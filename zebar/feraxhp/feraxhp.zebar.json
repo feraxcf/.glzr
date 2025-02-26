@@ -6,8 +6,21 @@
   "focused": false,
   "resizable": false,
   "transparent": false,
-  "defaultPlacements": [
+  "caching": {
+    "defaultDuration": 604800,
+    "rules": [
+      {
+        "urlRegex": "^http:\/\/localhost:4343\/.*$",
+        "duration": 0
+      }
+    ]
+  },
+  "privileges": {
+    "shellCommands": []
+  },
+  "presets": [
     {
+      "name": "default",
       "anchor": "top_left",
       "offsetX": "0px",
       "offsetY": "0px",
@@ -15,6 +28,11 @@
       "height": "28px",
       "monitorSelection": {
         "type": "all"
+      },
+      "dockToEdge": {
+        "enabled": false,
+        "edge": null,
+        "windowMargin": "0px"
       }
     }
   ]
