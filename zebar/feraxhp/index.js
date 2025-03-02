@@ -42,7 +42,7 @@ function App() {
       };
 
       fetchSong();
-      const interval = setInterval(fetchSong, 1000);
+      const interval = setInterval(fetchSong, 500);
 
       return () => clearInterval(interval);
   }, []);

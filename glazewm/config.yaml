@@ -85,6 +85,7 @@ window_rules:
     match:
       # Ignores any Zebar windows.
       - window_process: { equals: 'zebar' }
+      - window_process: { equals: 'RocketLeague' }
 
       # Ignores picture-in-picture windows for browsers.
       - window_title: { regex: '[Pp]icture.in.[Pp]icture' }
@@ -200,12 +201,6 @@ keybindings:
   - commands: ['wm-redraw']
     bindings: ['alt+shift+w']
 
-  # Launch CMD terminal. Alternatively, use `shell-exec wt` or
-  # `shell-exec %ProgramFiles%/Git/git-bash.exe` to start Windows
-  # Terminal and Git Bash respectively.
-  - commands: ['shell-exec s:/Program Files/Git/bin/bash.exe -i -l']
-    bindings: ['ctrl+alt+t']
-
   # Focus the next/previous workspace defined in `workspaces` config.
   - commands: ['focus --next-workspace']
     bindings: ['ctrl+alt+right']
@@ -272,3 +267,14 @@ keybindings:
     bindings: ['alt+shift+8']
   - commands: ['move --workspace 9', 'focus --workspace 9']
     bindings: ['alt+shift+9']
+
+  # Open programs
+  # Launch CMD terminal. Alternatively, use `shell-exec wt` or
+  # `shell-exec %ProgramFiles%/Git/git-bash.exe` to start Windows
+  # Terminal and Git Bash respectively.
+  - commands: ['shell-exec s:/Program Files/Git/bin/bash.exe -i -l']
+    bindings: ['ctrl+alt+t']
+    
+  - commands: ['shell-exec zed']
+    bindings: ['ctrl+alt+z']
+    
