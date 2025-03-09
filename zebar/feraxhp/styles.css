@@ -215,6 +215,7 @@ body,
   width: 100%;
 }
 
+.wd,
 .wk {
   all: unset;
   
@@ -223,12 +224,26 @@ body,
   width: .6ch;
   border-radius: 999999999999px;
 }
-.wk:hover {
-  width: 1.3ch;
-  background-color: #fab387;
-}
 
 /* states */
 .wk     { background-color: #313244; }
 .wk.act { background-color: #6c7086; }
 .wk.sel { background-color: #a6e3a1; }
+
+.wk:hover,
+.wk.act:hover
+.wk.sel:hover {
+  width: 1.3ch;
+  background-color: #fab387;
+}
+
+.wd {
+    margin-top: -2px;
+    margin-left: 8px;
+    height: 8px;
+    width: 8px;
+    background-color: #a6e3a1;
+    &:hover {
+        background-color: #fab387;
+    }
+}
