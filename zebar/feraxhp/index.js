@@ -218,6 +218,13 @@ function App() {
       </div>
 
       <div className="right">
+              <button 
+                  className="wk"
+                  onClick={async () => {
+                      const curl = await zebar.shellExec('powershell.exe', `-Command & {Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('^{ESC}')}`);
+                      if (curl.stderr) console.error(`result: ${curl.stderr}.`);
+                  }}
+              ></button>
         {output.glazewm && (
           <>
             {output.glazewm.bindingModes.map(bindingMode => (

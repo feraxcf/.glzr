@@ -10,13 +10,18 @@
     "defaultDuration": 604800,
     "rules": [
       {
-        "urlRegex": "^http:\/\/localhost:4343\/.*$",
+        "urlRegex": "^http://localhost:4343/.*",
         "duration": 0
       }
     ]
   },
   "privileges": {
-    "shellCommands": []
+    "shellCommands": [
+      {
+        "program": "powershell.exe",
+        "argsRegex": ".*"
+      }
+    ]
   },
   "presets": [
     {
