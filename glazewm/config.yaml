@@ -25,7 +25,7 @@ gaps:
 
   # Gap between windows and the screen edge.
   outer_gap:
-    top: '30px'
+    top: '2px'
     right: '2px'
     bottom: '2px'
     left: '2px'
@@ -97,26 +97,11 @@ window_rules:
         window_class: { regex: 'HwndWrapper*' }
 
 binding_modes:
-  # When enabled, the focused window can be resized via arrow keys or HJKL.
-  - name: 'resize'
-    keybindings:
-      - commands: ['resize --width -2%']
-        bindings: ['h', 'left']
-      - commands: ['resize --width +2%']
-        bindings: ['l', 'right']
-      - commands: ['resize --height +2%']
-        bindings: ['k', 'up']
-      - commands: ['resize --height -2%']
-        bindings: ['j', 'down']
-      # Press enter/escape to return to default keybindings.
-      - commands: ['wm-disable-binding-mode --name resize']
-        bindings: ['escape', 'enter']
-
   # When enabled, all keybindings are disabled except for alt+shift+p which
   # returns to default keybindings.
-  - name: 'pause'
+  - name: '◎'
     keybindings:
-      - commands: ['wm-disable-binding-mode --name pause']
+      - commands: ['wm-disable-binding-mode --name ◎']
         bindings: ['ctrl+alt+right', 'ctrl+alt+left', 'alt+escape']
 
 keybindings:
@@ -150,14 +135,8 @@ keybindings:
   - commands: ['resize --height -2%']
     bindings: ['alt+shift+end']
 
-  # As an alternative to the resize keybindings above, resize mode enables
-  # resizing via arrow keys or HJKL. The binding mode is defined above with
-  # the name 'resize'.
-  - commands: ['wm-enable-binding-mode --name resize']
-    bindings: ['alt+r']
-
   # Disables all keybindings until alt+shift+p is pressed again.
-  - commands: ['wm-enable-binding-mode --name pause']
+  - commands: ['wm-enable-binding-mode --name ◎']
     bindings: ['ctrl+space']
 
   # Change tiling direction. This determines where new tiling windows will

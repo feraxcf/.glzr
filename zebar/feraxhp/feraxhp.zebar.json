@@ -8,17 +8,16 @@
   "transparent": true,
   "caching": {
     "defaultDuration": 604800,
-    "rules": [
-      {
-        "urlRegex": "^http://localhost:4343/.*",
-        "duration": 0
-      }
-    ]
+    "rules": []
   },
   "privileges": {
     "shellCommands": [
       {
         "program": "powershell.exe",
+        "argsRegex": ".*"
+      },
+      {
+        "program": "YouTube Music.exe",
         "argsRegex": ".*"
       }
     ]
@@ -35,7 +34,7 @@
         "type": "all"
       },
       "dockToEdge": {
-        "enabled": false,
+        "enabled": true,
         "edge": null,
         "windowMargin": "0px"
       }

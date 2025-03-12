@@ -6,6 +6,8 @@ import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
 import * as zebar from 'https://esm.sh/zebar@2';
 import dateformat from 'https://esm.sh/dateformat@4';
 
+const ytSessionId = "com.github.th-ch.youtube-music";
+
 const providers = zebar.createProviderGroup({
   network: { type: 'network', refreshInterval: 500 },
   glazewm: { type: 'glazewm' },
@@ -21,31 +23,8 @@ createRoot(document.getElementById('root')).render(<App />);
 
 function App() {
   const [output, setOutput] = useState(providers.outputMap);
-  const [song, setSong] = useState(null);
   
-  useEffect(() => {
-      providers.onOutput(() => setOutput(providers.outputMap));
-
-      const fetchSong = async () => {
-        try {
-            const response = await fetch('http://localhost:4343/api/v1/song', {
-            method: 'GET',
-            headers: { 'accept': 'application/json' },
-            });
-            const data = await response.json();
-            
-            setSong(data);
-        } catch (error) { 
-            console.info('Is a song being played?:', error); 
-            setSong(null); 
-        }
-      };
-
-      fetchSong();
-      const interval = setInterval(fetchSong, 500);
-
-      return () => clearInterval(interval);
-  }, []);
+  useEffect(() => { providers.onOutput(() => setOutput(providers.outputMap)); }, []);
   
   // Get icon to show for current network status.
   function getNetworkIcon(networkOutput) {
@@ -121,72 +100,77 @@ function App() {
   }
 
   // Calculate the percentage of the song that has been played.
-  function getSongProgress(songOutput) {
-    if (
-        songOutput && 
-        songOutput.songDuration
-    ) {
-      return (songOutput.elapsedSeconds / songOutput.songDuration);
-    }
-    return 0;
+  const getSongProgress = (song) => ((song.position) / (song.endTime));
+  
+  const openYoutubeMusic = () => {
+      zebar.shellSpawn('YouTube Music.exe').then((ytm) => {
+          ytm.onStdout(async output => {
+              if (output.includes('"api-server::menu" loaded')) {
+                  await new Promise(resolve => setTimeout(resolve, 3500));
+                  await fetch('http://localhost:4343/api/v1/play', {
+                      method: 'POST',
+                      headers: { 'accept': 'application/json' },
+                  })
+                  .then(() => { console.warn("Played") })
+                  .catch((error) => { console.error('Error playing song:', error) });
+              }
+          });
+      });
   }
   
+  const playYoutubeMusic = (sessions) => {
+      if (sessions.some(s => s.sessionId === ytSessionId)) output.song.togglePlayPause({session_id: ytSessionId});
+      else { openYoutubeMusic() }
+  }
+
   function copyHourToClipboard() {
     const date = dateformat(new Date(), 'dd.mm.yy');
     
     console.warn('hour:', date);
     navigator.clipboard.writeText(date);
   }
+  
+  async function openStartMenu() {
+      const curl = await zebar.shellExec('powershell.exe', `-Command & {Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('^{ESC}')}`);
+      if (curl.stderr) console.error(`result: ${curl.stderr}.`);
+      console.warn('Windows button clicked', e);
+  }
+  
+  const operateSong = (song, type) => {
+      if (type === 'toggle') song.togglePlayPause()
+      else if (type === 'next') song.next();
+      else if (type === 'prev') song.previous();
+  }
 
   return (
     <div className="app">
       <div className="left">
-        <img 
-            className="user" 
-            style = {(song && song.imageSrc && !song.isPaused) ? { animation: "rotate 5s linear infinite" } : {}}
-            src={(song && song.imageSrc) ? song.imageSrc : "https://avatars.githubusercontent.com/u/116177764?v=4"}
-            onClick={() => { 
-                try {
-                    fetch('http://localhost:4343/api/v1/toggle-play', {
-                        method: 'POST',
-                        headers: { 'accept': 'application/json' },
-                    });
-                } catch (error) { console.info('Is a song being played?:', error); }
-            }}
+        <button 
+            className="sbtn windows nf nf-cod-menu"
+            onClick={async () => { await openStartMenu(); }}
+        ></button>
+        <img  className="user" src= "./me.png" onClick={() => { playYoutubeMusic(output.song?.allSessions) }}
         ></img>
-        {song && (
-          <div className="song">
-              <div 
-                  className="title"
-                  style = { (song.title.length > 20) ? { animation: "scroll 20s linear infinite" } : {}}>
-                      {song.title}
-                  </div>
-              <div className="progress">
-                  <div
-                      className={ song.isPaused ? "bar paused": "bar" }
-                      style = {{ width: (getSongProgress(song) * 100) + "%" }}>
-                  </div>
-              </div>
+              {output.song?.currentSession?.title && (
+            <div className="media">
+                <div className="song" onClick={() => { if (output.song?.currentSession?.sessionId) navigator.clipboard.writeText(output.song.currentSession.sessionId); } }>
+                    <div className="title" 
+                        style = { (output.song.currentSession.title.length > 15) ? { animation: "scroll 10s linear infinite" } : {}}
+                    > { output.song.currentSession.title } </div>
+                    <div className="progress">
+                        <div
+                            className={ (!output.song.currentSession.isPlaying) ? "bar paused": "bar" }
+                            style = {{ width: ( getSongProgress(output.song.currentSession) * 100 ) + "%" }}>
+                        </div>
+                    </div>
+                </div>
+                <div className="controls">
+                    <div onClick={() => { operateSong(output.song, "prev")}} className="sbtn next ctr">◀</div>
+                    <div onClick={() => { operateSong(output.song, "toggle")}} className={"sbtn tgg ctr " + (!output.song.currentSession.isPlaying ? "pause" : "")}>{(output.song.currentSession.isPlaying ? "▣" : "▢")}</div>
+                    <div onClick={() => { operateSong(output.song, "next")}} className="sbtn prev ctr">▶</div>
+                </div>
           </div>
         )}
-        {/* 
-        {output.glazewm && (
-          <div className="workspaces">
-            {output.glazewm.currentWorkspaces.map(workspace => (
-              <button
-                className={`workspace ${workspace.hasFocus && 'focused'} ${workspace.isDisplayed && 'displayed'}`}
-                onClick={() =>
-                  output.glazewm.runCommand(
-                    `focus --workspace ${workspace.name}`,
-                  )
-                }
-                key={workspace.name}
-              >
-                {workspace.displayName ?? workspace.name}
-              </button>
-            ))}
-          </div>
-        )} */}
       </div>
 
       <div className="center">
@@ -218,25 +202,10 @@ function App() {
       </div>
 
       <div className="right">
-        {output.glazewm && (
-          <>
-            {output.glazewm.bindingModes.map(bindingMode => (
-              <button
-                className="binding-mode"
-                key={bindingMode.name}
-              >
-                {bindingMode.displayName ?? bindingMode.name}
-              </button>
-            ))}
-
-            <button
-              className={`tiling-direction nf ${output.glazewm.tilingDirection === 'horizontal' ? 'nf-md-swap_horizontal' : 'nf-md-swap_vertical'}`}
-              onClick={() =>
-                output.glazewm.runCommand('toggle-tiling-direction')
-              }
-            ></button>
-          </>
+        { output.song?.currentSession?.sessionId !== ytSessionId && (
+            <button className="tb ytm" onClick={() => { playYoutubeMusic(output.song.allSessions) }}> </button>
         )}
+        
 
         {output.network && (
           <div className="network">
@@ -281,15 +250,28 @@ function App() {
             {Math.round(output.weather.celsiusTemp)}°C
           </div>
         )}
-        
-        <button 
-            className="wd"
-            onClick={async () => {
-                const curl = await zebar.shellExec('powershell.exe', `-Command & {Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('^{ESC}')}`);
-                if (curl.stderr) console.error(`result: ${curl.stderr}.`);
-            }}
-        ></button>
-        
+        {output.glazewm && (
+            <>
+            <button className={ "sbtn binding-mode" + (output.glazewm?.bindingModes[0]?.name === "◎" ? " stop" : "") } 
+                key={output.glazewm?.bindingModes[0]?.name ?? "default"} 
+                onClick={() => {
+                    if (output.glazewm?.bindingModes[0]?.name)
+                        output.glazewm.runCommand(`wm-disable-binding-mode --name ${output.glazewm?.bindingModes[0]?.name}`)
+                    else 
+                        output.glazewm.runCommand(`wm-enable-binding-mode --name ◎`)
+                }}
+            >
+                {output.glazewm?.bindingModes[0]?.name ?? "◉"}
+            </button>
+
+            <button
+              className={`sbtn tiling-direction nf ${output.glazewm.tilingDirection === 'horizontal' ? 'nf-md-swap_horizontal' : 'nf-md-swap_vertical'}`}
+              onClick={() =>
+                output.glazewm.runCommand('toggle-tiling-direction')
+              }
+            ></button>
+          </>
+        )}
       </div>
     </div>
   );
