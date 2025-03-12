@@ -27,7 +27,7 @@ html,
 body,
 #root {
   height: 100%;
-  background-color: var(--ctp-base);
+  background-color: transparent;
 }
 
 .app {
@@ -36,7 +36,9 @@ body,
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   height: 100%;
-  margin: 0 var(--margin-min);
+  padding: 0 var(--margin-min);
+  
+  background: rgba(var(--ctp-base-rgb), 1);
 }
 
 .left,
@@ -162,7 +164,7 @@ body,
 .progress {
   width: 15ch;
   height: 2px;
-  background-color: var(--ctp-peach);
+  background-color: var(--ctp-surface1);
   overflow: hidden;
 }
 
