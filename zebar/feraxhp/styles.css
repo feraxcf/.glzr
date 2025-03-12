@@ -108,6 +108,17 @@ body,
   cursor: pointer;
 }
 
+.sbtn,
+.user,
+.logo,
+.binding-mode,
+.tiling-direction,
+.network,
+.memory,
+.cpu,
+.battery,
+.weather { user-select: none; }
+
 
 .binding-mode, 
 .tiling-direction  { color: var(--ctp-green); }
