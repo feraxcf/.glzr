@@ -42,6 +42,7 @@ export const setColorScheme = (mode_) => {
         --ctp-base-rgb   : ${(theme.name === "latte") ? rgb2string(theme.colors.mantle.rgb) : rgb2string(theme.colors.base.rgb)} ;
         --ctp-mantle     : ${theme.colors.mantle.hex} ;
         --ctp-crust      : ${theme.colors.crust.hex} ;
+        --ctp-crust-rgb  : ${rgb2string(theme.colors.crust.rgb)} ;
     }`;
     
     css2dom(text);
