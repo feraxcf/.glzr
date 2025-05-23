@@ -7,7 +7,7 @@ export const operateSong = (song, type) => {
     else if (type === 'prev') song.previous();
 }
 
-export const openYoutubeMusic = () => {
+export const openYoutubeMusic = (zebar) => {
     zebar.shellSpawn('YouTube Music.exe').then((ytm) => {
         ytm.onStdout(async output => {
             if (output.includes('"api-server::menu" loaded')) {
@@ -23,7 +23,7 @@ export const openYoutubeMusic = () => {
     });
 }
 
-export const playYoutubeMusic = (sessions) => {
+export const playYoutubeMusic = (sessions, output, zebar) => {
     if (sessions.some(s => s.sessionId === ytSessionId)) output.song.togglePlayPause({session_id: ytSessionId});
-    else { openYoutubeMusic() }
+    else { openYoutubeMusic(zebar) }
 }
