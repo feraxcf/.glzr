@@ -19,6 +19,10 @@
       {
         "program": "YouTube Music.exe",
         "argsRegex": ".*"
+      },
+      {
+        "program": "mbr.exe",
+        "argsRegex": ".*"
       }
     ]
   },

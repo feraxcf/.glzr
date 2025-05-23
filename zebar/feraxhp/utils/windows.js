@@ -10,3 +10,15 @@ export async function openStartMenu() {
     if (curl.stderr) console.error(`result: ${curl.stderr}.`);
     console.warn('Windows button clicked', e);
 }
+
+export const getBrigthness = async (zebar) => {
+    const br = await zebar.shellExec('mbr.exe', `g -q lg`);
+    if (br.stderr) console.error(`result: ${br.stderr}.`);
+    return br.stdout;
+}
+
+export const setBrigthness = async (zebar, brightness) => {
+    const br = await zebar.shellExec('mbr.exe', `s -q ${brightness}`);
+    if (br.stderr) console.error(`result: ${br.stderr}.`);
+    return br.stdout;
+}

@@ -1,6 +1,7 @@
 import React, {
   useState,
   useEffect,
+  useRef,
 } from 'https://esm.sh/react@18?dev';
 import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
 import * as zebar from 'https://esm.sh/zebar@2';
@@ -15,7 +16,9 @@ import {
 } from './utils/song.js';
 import {
     copyHourToClipboard,
+    getBrigthness,
     openStartMenu,
+    setBrigthness,
 } from './utils/windows.js';
 
 const message = "Wellcome FeraxHp!"
@@ -59,6 +62,7 @@ function App() {
         {output.battery && ( <Battery output={output} />)}
         {output.weather && ( <WeatherIcon output={output} />)}
         {output.glazewm && ( <Glazewm output={output}/>)}
+        <BrightnessButton zebar={zebar}/>
       </div>
     </div>
   );
@@ -234,3 +238,46 @@ function WorkspacesDots({ output: { glazewm } }) {
         </div>
     );
 }
+
+// Brightness
+const BrightnessButton = ({zebar}) => {
+  const [br, setBr] = useState(0);
+  
+    // Leer el brillo real al montar el componente
+    useEffect(() => {
+      getBrigthness(zebar).then((valor) => setBr(parseInt(valor)));
+    }, [zebar]);
+  
+    const handleClick = async () => {
+      const newBr = br === 0 ? 99 : 0;
+      const valorReal = await setBrigthness(zebar, newBr);
+      setBr(parseInt(valorReal));
+    };
+  
+    const handleWheel = async (e) => {
+      let newBr = br + (e.deltaY < 0 ? 10 : -10);
+      if (newBr > 99) newBr = 99;
+      if (newBr < 0) newBr = 0;
+      const valorReal = await setBrigthness(zebar, newBr);
+      setBr(parseInt(valorReal));
+    };
+  
+  const style = {
+      fontFamily: ['Fira Mono', 'JetBrains Mono', 'Consolas', 'Menlo', 'monospace'],
+  }
+  
+  const color = (lvl) => {
+    if ( lvl > 80) return "max";
+    if ( lvl > 60) return "med";
+    if ( lvl > 40) return "some";
+    if ( lvl > 20) return "bad";
+    return "worse";
+  }
+  
+  return <button
+      onClick={handleClick}
+      onWheel={handleWheel}
+      style={style}
+      className={'sbtn ' + color(br)}
+    > {br.toString().padStart(2, '0')} </button>
+};

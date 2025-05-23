@@ -103,7 +103,8 @@ body,
   color: var(--ctp-text);
   border-radius: 2px;
   line-height: 1;
-  padding: 4px 8px;
+  padding: 4px 4px;
+  margin-right: 4px;
   border: 0;
   cursor: pointer;
 }
@@ -123,7 +124,6 @@ body,
 .binding-mode, 
 .tiling-direction  { color: var(--ctp-green); }
 .binding-mode.stop { color: var(--ctp-maroon); }
-.binding-mode      { margin-right: 4px; }
 
 .cpu .high-usage { color: var(--ctp-red); }
 
