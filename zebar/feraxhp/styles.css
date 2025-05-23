@@ -103,7 +103,7 @@ body,
   color: var(--ctp-text);
   border-radius: 2px;
   line-height: 1;
-  padding: 4px 4px;
+  padding: 4px 8px;
   margin-right: 4px;
   border: 0;
   cursor: pointer;
