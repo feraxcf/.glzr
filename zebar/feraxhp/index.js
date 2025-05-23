@@ -6,7 +6,17 @@ import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
 import * as zebar from 'https://esm.sh/zebar@2';
 import dateformat from 'https://esm.sh/dateformat@4';
 
-const ytSessionId = "com.github.th-ch.youtube-music";
+// Utils
+import { 
+    ytSessionId, 
+    getSongProgress, 
+    operateSong, 
+    playYoutubeMusic,
+} from './utils/song.js';
+import {
+    copyHourToClipboard,
+    openStartMenu,
+} from './utils/windows.js';
 
 const providers = zebar.createProviderGroup({
   network: { type: 'network', refreshInterval: 500 },
@@ -25,254 +35,201 @@ function App() {
   const [output, setOutput] = useState(providers.outputMap);
   
   useEffect(() => { providers.onOutput(() => setOutput(providers.outputMap)); }, []);
-  
-  // Get icon to show for current network status.
-  function getNetworkIcon(networkOutput) {
-    switch (networkOutput.defaultInterface?.type) {
-      case 'ethernet':
-        return <i className="good nf nf-md-ethernet_cable"></i>;
-      case 'wifi':
-        if (networkOutput.defaultGateway?.signalStrength >= 80) {
-          return <i className="max nf nf-md-wifi_strength_4"></i>;
-        } else if (
-          networkOutput.defaultGateway?.signalStrength >= 65
-        ) {
-          return <i className="med nf nf-md-wifi_strength_3"></i>;
-        } else if (
-          networkOutput.defaultGateway?.signalStrength >= 40
-        ) {
-          return <i className="some nf nf-md-wifi_strength_2"></i>;
-        } else if (
-          networkOutput.defaultGateway?.signalStrength >= 25
-        ) {
-          return <i className="bad nf nf-md-wifi_strength_1"></i>;
-        } else {
-          return <i className="worse nf nf-md-wifi_strength_outline"></i>;
-        }
-      default:
-        return (
-          <i className="nt def nf nf-md-wifi_strength_off_outline"></i>
-        );
-    }
-  }
-
-  // Get icon to show for how much of the battery is charged.
-  function getBatteryIcon(batteryOutput) {
-    if (batteryOutput.chargePercent > 80)
-      return <i className="nf max nf-fa-battery_4"></i>;
-    if (batteryOutput.chargePercent > 50)
-      return <i className="nf med nf-fa-battery_3"></i>;
-    if (batteryOutput.chargePercent > 30)
-      return <i className="nf some nf-fa-battery_2"></i>;
-    if (batteryOutput.chargePercent > 10)
-      return <i className="nf bad nf-fa-battery_1"></i>;
-    return <i className="nf worse nf-fa-battery_0"></i>;
-  }
-
-  // Get icon to show for current weather status.
-  function getWeatherIcon(weatherOutput) {
-    switch (weatherOutput.status) {
-      case 'clear_day':
-        return <i className="nf nf-weather-day_sunny"></i>;
-      case 'clear_night':
-        return <i className="nf nf-weather-night_clear"></i>;
-      case 'cloudy_day':
-        return <i className="nf nf-weather-day_cloudy"></i>;
-      case 'cloudy_night':
-        return <i className="nf nf-weather-night_alt_cloudy"></i>;
-      case 'light_rain_day':
-        return <i className="nf nf-weather-day_sprinkle"></i>;
-      case 'light_rain_night':
-        return <i className="nf nf-weather-night_alt_sprinkle"></i>;
-      case 'heavy_rain_day':
-        return <i className="nf nf-weather-day_rain"></i>;
-      case 'heavy_rain_night':
-        return <i className="nf nf-weather-night_alt_rain"></i>;
-      case 'snow_day':
-        return <i className="nf nf-weather-day_snow"></i>;
-      case 'snow_night':
-        return <i className="nf nf-weather-night_alt_snow"></i>;
-      case 'thunder_day':
-        return <i className="nf nf-weather-day_lightning"></i>;
-      case 'thunder_night':
-        return <i className="nf nf-weather-night_alt_lightning"></i>;
-    }
-  }
-
-  // Calculate the percentage of the song that has been played.
-  const getSongProgress = (song) => ((song.position) / (song.endTime));
-  
-  const openYoutubeMusic = () => {
-      zebar.shellSpawn('YouTube Music.exe').then((ytm) => {
-          ytm.onStdout(async output => {
-              if (output.includes('"api-server::menu" loaded')) {
-                  await new Promise(resolve => setTimeout(resolve, 3500));
-                  await fetch('http://localhost:4343/api/v1/play', {
-                      method: 'POST',
-                      headers: { 'accept': 'application/json' },
-                  })
-                  .then(() => { console.warn("Played") })
-                  .catch((error) => { console.error('Error playing song:', error) });
-              }
-          });
-      });
-  }
-  
-  const playYoutubeMusic = (sessions) => {
-      if (sessions.some(s => s.sessionId === ytSessionId)) output.song.togglePlayPause({session_id: ytSessionId});
-      else { openYoutubeMusic() }
-  }
-
-  function copyHourToClipboard() {
-    const date = dateformat(new Date(), 'dd.mm.yy');
-    
-    console.warn('hour:', date);
-    navigator.clipboard.writeText(date);
-  }
-  
-  async function openStartMenu() {
-      const curl = await zebar.shellExec('powershell.exe', `-Command & {Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('^{ESC}')}`);
-      if (curl.stderr) console.error(`result: ${curl.stderr}.`);
-      console.warn('Windows button clicked', e);
-  }
-  
-  const operateSong = (song, type) => {
-      if (type === 'toggle') song.togglePlayPause()
-      else if (type === 'next') song.next();
-      else if (type === 'prev') song.previous();
-  }
 
   return (
     <div className="app">
       <div className="left">
-        <button 
-            className="sbtn windows nf nf-cod-menu"
-            onClick={async () => { await openStartMenu(); }}
-        ></button>
-        <img  className="user" src= "./me.png" onClick={() => { playYoutubeMusic(output.song?.allSessions) }}
-        ></img>
-              {output.song?.currentSession?.title && (
-            <div className="media">
-                <div className="song" onClick={() => { if (output.song?.currentSession?.sessionId) navigator.clipboard.writeText(output.song.currentSession.sessionId); } }>
-                    <div className="title" 
-                        style = { (output.song.currentSession.title.length > 15) ? { animation: "scroll 10s linear infinite" } : {}}
-                    > { output.song.currentSession.title } </div>
-                    <div className="progress">
-                        <div
-                            className={ (!output.song.currentSession.isPlaying) ? "bar paused": "bar" }
-                            style = {{ width: ( getSongProgress(output.song.currentSession) * 100 ) + "%" }}>
-                        </div>
-                    </div>
-                </div>
-                <div className="controls">
-                    <div onClick={() => { operateSong(output.song, "prev")}} className="sbtn next ctr">◀</div>
-                    <div onClick={() => { operateSong(output.song, "toggle")}} className={"sbtn tgg ctr " + (!output.song.currentSession.isPlaying ? "pause" : "")}>{(output.song.currentSession.isPlaying ? "▣" : "▢")}</div>
-                    <div onClick={() => { operateSong(output.song, "next")}} className="sbtn prev ctr">▶</div>
-                </div>
-          </div>
-        )}
+        <button className="sbtn windows nf nf-cod-menu" onClick={async () => { await openStartMenu(); }}></button>
+        <img className="user" src= "./me.png" onClick={() => { playYoutubeMusic(output.song?.allSessions) }}></img>
+        {output.song?.currentSession?.title && ( <Media output={output}/>)}
       </div>
 
       <div className="center">
           <div className="hour-wrapper">
-              <div className="hour" onClick={copyHourToClipboard}>{output.date?.formatted ?? "EEE d MMM t"}</div>
-              {output.glazewm && (
-                  <div className="wks">
-                      {Array.from({ length: 9 }, (_, i) => (i + 1).toString()).map(workspaceName => {
-                            const workspace = output.glazewm.currentWorkspaces.find(ws => ws.name === workspaceName);
-                            const wks = {
-                                name: workspaceName,
-                                hasFocus: workspace?.hasFocus ?? false,
-                                isDisplayed: workspace? true : false,
-                            }
-                    
-                            return (
-                                <button
-                                    className={`wk ${wks.hasFocus ? 'sel' : ''} ${wks.isDisplayed ? 'act' : ''}`}
-                                    onClick={() => output.glazewm.runCommand(
-                                        `focus --workspace ${wks.name}`,
-                                    )}
-                                    key={wks.name}
-                                ></button>
-                            );
-                        })}
-                  </div>
-              )}
+            <div className="hour" onClick={copyHourToClipboard}>{output.date?.formatted ?? "EEE d MMM t"}</div>
+            {output.glazewm && ( <WorkspacesDots output={output}/> )}
           </div>
       </div>
 
       <div className="right">
-        { output.song?.currentSession?.sessionId !== ytSessionId && (
-            <button className="tb ytm" onClick={() => { playYoutubeMusic(output.song.allSessions) }}> </button>
-        )}
-        
-
-        {output.network && (
-          <div className="network">
-            {getNetworkIcon(output.network)}
-            {output.network.defaultGateway?.ssid}
-          </div>
-        )}
-
-        {output.memory && (
-          <div className="memory">
-            <i className="nf nf-fae-chip"></i>
-            {Math.round(output.memory.usage)}%
-          </div>
-        )}
-
-        {output.cpu && (
-          <div className="cpu">
-            <i className="nf nf-oct-cpu"></i>
-
-            <span
-              className={output.cpu.usage > 85 ? 'high-usage' : ''}
-            >
-              {Math.round(output.cpu.usage)}%
-            </span>
-          </div>
-        )}
-
-        {output.battery && (
-          <div className="battery">
-            {/* Show icon for whether battery is charging. */}
-            {output.battery.isCharging && (
-              <i className="bt nf nf-md-power_plug charging-icon"></i>
-            )}
-            {getBatteryIcon(output.battery)}
-            {Math.round(output.battery.chargePercent)}%
-          </div>
-        )}
-
-        {output.weather && (
-          <div className="weather">
-            {getWeatherIcon(output.weather)}
-            {Math.round(output.weather.celsiusTemp)}°C
-          </div>
-        )}
-        {output.glazewm && (
-            <>
-            <button className={ "sbtn binding-mode" + (output.glazewm?.bindingModes[0]?.name === "◎" ? " stop" : "") } 
-                key={output.glazewm?.bindingModes[0]?.name ?? "default"} 
-                onClick={() => {
-                    if (output.glazewm?.bindingModes[0]?.name)
-                        output.glazewm.runCommand(`wm-disable-binding-mode --name ${output.glazewm?.bindingModes[0]?.name}`)
-                    else 
-                        output.glazewm.runCommand(`wm-enable-binding-mode --name ◎`)
-                }}
-            >
-                {output.glazewm?.bindingModes[0]?.name ?? "◉"}
-            </button>
-
-            <button
-              className={`sbtn tiling-direction nf ${output.glazewm.tilingDirection === 'horizontal' ? 'nf-md-swap_horizontal' : 'nf-md-swap_vertical'}`}
-              onClick={() =>
-                output.glazewm.runCommand('toggle-tiling-direction')
-              }
-            ></button>
-          </>
-        )}
+        {output.network && ( <Network output={ output}/>)}
+        {output.memory  && ( <Memory output={output}/>)}
+        {output.cpu     && ( <Cpu output={output}/>)}
+        {output.battery && ( <Battery output={output} />)}
+        {output.weather && ( <WeatherIcon output={output} />)}
+        {output.glazewm && ( <Glazewm output={output}/>)}
       </div>
     </div>
   );
+}
+// Media
+function Media( { output: { song } } ) {
+    const title = song.currentSession.title;
+    const style = (title.length > 15) ? { animation: "scroll 10s linear infinite" } : {};
+    const copy = (sessionId) => { if (sessionId) navigator.clipboard.writeText(sessionId) };
+    const isPlaying = song.currentSession.isPlaying;
+    
+    return <div className="media">
+        <div className="song" onClick={() => { copy(song?.currentSession?.sessionId) } }>
+            <div className="title" style={style}>{title}</div>
+            <div className="progress">
+                <div 
+                    className={(!isPlaying) ? "bar paused": "bar"} 
+                    style={{ width: ( getSongProgress(song.currentSession) * 100 ) + "%" }}
+                ></div>
+            </div>
+        </div>
+        <div className="controls">
+            <div onClick={() => { operateSong(song, "prev")}} className="sbtn next ctr">◀</div>
+            <div onClick={() => { operateSong(song, "toggle")}} className={"sbtn tgg ctr " + (!isPlaying ? "pause" : "")}>{(isPlaying ? "▣" : "▢")}</div>
+            <div onClick={() => { operateSong(song, "next")}} className="sbtn prev ctr">▶</div>
+        </div>
+  </div>
+}
+
+// Network
+function getWifiIconClass(strength) {
+  if (strength >= 80 && strength <= 100) return "max nf nf-md-wifi_strength_4";
+  if (strength >= 65 && strength < 80) return "med nf nf-md-wifi_strength_3";
+  if (strength >= 40 && strength < 65) return "some nf nf-md-wifi_strength_2";
+  if (strength >= 25 && strength < 40) return "bad nf nf-md-wifi_strength_1";
+  return "worse nf nf-md-wifi_strength_outline";
+}
+
+function Network({ output: { network } }) {
+    const type = network.defaultInterface?.type ?? "default";
+    const strength = network.defaultGateway?.signalStrength ?? 0;
+    
+    const icons = {
+        ethernet: (strength) => <i className="max nf nf-md-ethernet_cable"></i>,
+        wifi: (strength) => <i className={getWifiIconClass(strength)}></i>,
+        default: (strength) => <i className="nt def nf nf-md-wifi_strength_off_outline"></i>,
+    }
+    
+    const name = {
+        ethernet: (network) => network.defaultInterface.friendlyName,
+        wifi: (network) => network.defaultGateway?.ssid ?? network.defaultInterface.friendlyName,
+        default: (network) => "NN.A",
+    }
+    
+    return <div className="network">
+        {(type in icons) ? icons[type](strength) : icons.default(strength)}
+        {(type in name) ? name[type](network) : icons.default(network)}
+    </div>
+}
+
+// Memory
+function Memory({output: {memory} }) {
+    return <div className="memory">
+        <i className="nf nf-fae-chip"></i>
+        {Math.round(memory.usage)}%
+    </div>
+}
+
+// CPU
+function Cpu({ output: { cpu } }) {
+    return <div className="cpu">
+        <i className="nf nf-oct-cpu"></i>
+        <span className={cpu.usage > 85 ? 'high-usage' : ''}>
+            {Math.round(cpu.usage)}%
+        </span>
+    </div>
+}
+
+// Weather
+function WeatherIcon({ output: { weather: { status, celsiusTemp } } }) {
+    const className = {
+        'clear_day': "nf nf-weather-day_sunny",
+        'clear_night': "nf nf-weather-night_clear",
+        'cloudy_day': "nf nf-weather-day_cloudy",
+        'cloudy_night': "nf nf-weather-night_alt_cloudy",
+        'light_rain_day': "nf nf-weather-day_sprinkle",
+        'light_rain_night': "nf nf-weather-night_alt_sprinkle",
+        'heavy_rain_day': "nf nf-weather-day_rain",
+        'heavy_rain_night': "nf nf-weather-night_alt_rain",
+        'snow_day': "nf nf-weather-day_snow",
+        'snow_night': "nf nf-weather-night_alt_snow",
+        'thunder_day': "nf nf-weather-day_lightning",
+        'thunder_night': "nf nf-weather-night_alt_lightning",
+    }
+    
+    return <div className="weather">
+        <i className={className[status]}></i> 
+        {Math.round(celsiusTemp)}°C
+    </div>
+}
+
+// Battery
+function getBatteryIcon(level) {
+  if (level > 80) return "nf max nf-fa-battery_4";
+  if (level > 50) return "nf med nf-fa-battery_3";
+  if (level > 30) return "nf some nf-fa-battery_2";
+  if (level > 10) return "nf bad nf-fa-battery_1";
+  return "nf worse nf-fa-battery_0"
+}
+
+function Battery({ output: { battery: { chargePercent, isCharging } } }) {
+    return <div className="battery">
+        {isCharging && ( <i className="bt nf nf-md-power_plug charging-icon"></i> )}
+        <i className={getBatteryIcon(battery)}></i>
+        {Math.round(chargePercent)}%
+    </div>
+}
+
+// Glazewm
+function Glazewm({ output: { glazewm } }) {
+    // Binding
+    const bindingMode = glazewm.bindingModes[0]?.name;
+    const bindModes = {
+        "◎": {
+            class: " stop",
+            func: () => { glazewm.runCommand(`wm-disable-binding-mode --name ${bindingMode}`) }
+        }
+    }
+    
+    // Tilling 
+    const direction = glazewm.tilingDirection === 'horizontal' ? 'nf-md-swap_horizontal' : 'nf-md-swap_vertical'
+    return (<>
+        <button className={"sbtn binding-mode" + (bindModes[bindingMode]?.class ?? "")}
+            key={bindingMode ?? "default"}
+            onClick={() => {
+                (bindingMode in bindModes) ? bindModes[bindingMode].func() : glazewm.runCommand(`wm-enable-binding-mode --name ◎`);
+            }}
+        > { (bindingMode ?? "◉")[0] } </button>
+        <button
+            className={`sbtn tiling-direction nf ${direction}`}
+            onClick={() => glazewm.runCommand('toggle-tiling-direction') }
+        ></button>
+    </>);
+}
+
+// Glazewm : Workspaces
+function WorkspacesDots({ output: { glazewm } }) {
+    const names = Array.from({ length: 9 }, (_, i) => (i + 1).toString());
+    const current = glazewm.currentWorkspaces;
+
+    return (
+        <div className="wks">
+            {names.map(name => {
+                const workspace = current.find(ws => ws.name === name);
+                const hasFocus = workspace?.hasFocus ?? false;
+                const isDisplayed = Boolean(workspace);
+
+                const buttonClass = [
+                    'wk', 
+                    hasFocus && 'sel',
+                    isDisplayed && 'act'
+                ].filter(Boolean).join(' ');
+
+                return (
+                    <button
+                        key={name}
+                        className={buttonClass}
+                        onClick={() => glazewm.runCommand(`focus --workspace ${name}`)}
+                        aria-label={`Workspace ${name}`}
+                    />
+                );
+            })}
+        </div>
+    );
 }
