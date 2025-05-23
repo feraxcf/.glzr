@@ -18,6 +18,7 @@ import {
     openStartMenu,
 } from './utils/windows.js';
 
+const message = "Wellcome FeraxHp!"
 const providers = zebar.createProviderGroup({
   network: { type: 'network', refreshInterval: 500 },
   glazewm: { type: 'glazewm' },
@@ -46,7 +47,7 @@ function App() {
 
       <div className="center">
           <div className="hour-wrapper">
-            <div className="hour" onClick={copyHourToClipboard}>{output.date?.formatted ?? "EEE d MMM t"}</div>
+            <div className="hour" onClick={copyHourToClipboard}>{output.date?.formatted ?? message}</div>
             {output.glazewm && ( <WorkspacesDots output={output}/> )}
           </div>
       </div>
