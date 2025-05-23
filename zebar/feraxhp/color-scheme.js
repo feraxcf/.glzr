@@ -12,7 +12,6 @@ const rgb2string = (rgb) => `${rgb.r}, ${rgb.g}, ${rgb.b}`;
 export const setColorScheme = (mode_) => {
     const mode = scheme[mode_];
     const theme = palette[mode];
-    console.warn(theme)
     
     const text = 
     `:root{
