@@ -173,10 +173,11 @@ function getBatteryIcon(level) {
   return "nf worse nf-fa-battery_0"
 }
 
-function Battery({ output: { battery: { chargePercent, isCharging } } }) {
+function Battery({ output: { battery } }) {
+    const { chargePercent, isCharging } = battery;
     return <div className="battery">
         {isCharging && ( <i className="bt nf nf-md-power_plug charging-icon"></i> )}
-        <i className={getBatteryIcon(battery)}></i>
+        <i className={getBatteryIcon(chargePercent)}></i>
         {Math.round(chargePercent)}%
     </div>
 }
