@@ -1,15 +1,12 @@
 import React, {
   useState,
   useEffect,
-  useRef,
 } from 'https://esm.sh/react@18?dev';
 import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
 import * as zebar from 'https://esm.sh/zebar@2';
-import dateformat from 'https://esm.sh/dateformat@4';
 
 // Utils
 import { 
-    ytSessionId, 
     getSongProgress, 
     operateSong, 
     playYoutubeMusic,

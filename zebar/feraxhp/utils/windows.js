@@ -1,3 +1,5 @@
+import dateformat from 'https://esm.sh/dateformat@4';
+
 export function copyHourToClipboard() {
   const date = dateformat(new Date(), 'dd.mm.yy');
   
