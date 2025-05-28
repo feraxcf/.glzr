@@ -43,7 +43,7 @@ function App() {
   return (
     <div className="app">
       <div className="left">
-        <button className="sbtn windows nf nf-cod-menu" onClick={async () => { await openStartMenu(); }}></button>
+        <button className="sbtn windows nf nf-cod-menu" onClick={async () => { await openStartMenu(zebar); }}></button>
         <img className="user" src= "./me.png" onClick={() => { playYoutubeMusic(output.song?.allSessions, output, zebar) }}></img>
         {output.song?.currentSession?.title && ( <Media output={output}/>)}
       </div>

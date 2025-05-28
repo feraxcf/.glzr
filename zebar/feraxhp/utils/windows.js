@@ -5,7 +5,7 @@ export function copyHourToClipboard() {
   navigator.clipboard.writeText(date);
 }
 
-export async function openStartMenu() {
+export async function openStartMenu(zebar) {
     const curl = await zebar.shellExec('powershell.exe', `-Command & {Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('^{ESC}')}`);
     if (curl.stderr) console.error(`result: ${curl.stderr}.`);
     console.warn('Windows button clicked', e);
