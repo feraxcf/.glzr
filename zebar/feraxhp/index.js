@@ -1,15 +1,12 @@
 import React, {
   useState,
   useEffect,
-  useRef,
 } from 'https://esm.sh/react@18?dev';
 import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
 import * as zebar from 'https://esm.sh/zebar@2';
-import dateformat from 'https://esm.sh/dateformat@4';
 
 // Utils
 import { 
-    ytSessionId, 
     getSongProgress, 
     operateSong, 
     playYoutubeMusic,
@@ -43,7 +40,7 @@ function App() {
   return (
     <div className="app">
       <div className="left">
-        <button className="sbtn windows nf nf-cod-menu" onClick={async () => { await openStartMenu(); }}></button>
+        <button className="sbtn windows nf nf-cod-menu" onClick={async () => { await openStartMenu(zebar); }}></button>
         <img className="user" src= "./me.png" onClick={() => { playYoutubeMusic(output.song?.allSessions, output, zebar) }}></img>
         {output.song?.currentSession?.title && ( <Media output={output}/>)}
       </div>
@@ -173,10 +170,11 @@ function getBatteryIcon(level) {
   return "nf worse nf-fa-battery_0"
 }
 
-function Battery({ output: { battery: { chargePercent, isCharging } } }) {
+function Battery({ output: { battery } }) {
+    const { chargePercent, isCharging } = battery;
     return <div className="battery">
         {isCharging && ( <i className="bt nf nf-md-power_plug charging-icon"></i> )}
-        <i className={getBatteryIcon(battery)}></i>
+        <i className={getBatteryIcon(chargePercent)}></i>
         {Math.round(chargePercent)}%
     </div>
 }
