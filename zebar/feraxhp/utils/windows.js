@@ -10,7 +10,7 @@ export function copyHourToClipboard() {
 export async function openStartMenu(zebar) {
     const curl = await zebar.shellExec('powershell.exe', `-Command & {Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('^{ESC}')}`);
     if (curl.stderr) console.error(`result: ${curl.stderr}.`);
-    console.warn('Windows button clicked', e);
+    // console.warn('Windows button clicked', e);
 }
 
 export const getBrigthness = async (zebar) => {
