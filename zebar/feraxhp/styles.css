@@ -31,6 +31,7 @@ body,
 }
 
 .app {
+  position: relative;
   text-align: center;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -49,11 +50,15 @@ body,
 }
 
 .center {
-  justify-self: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   color: var(--ctp-rosewater);
 }
 
 .right {
+  position: absolute;
+  right: 0;
   justify-self: end;
 }
 
@@ -259,3 +264,68 @@ body,
 /* Tools */
 
 .windows { margin: 0 var(--margin); padding: 5px; }
+
+/* Systray */
+
+.systray-icon {
+    height: calc(var(--height) - 6px);
+    margin-right: var(--margin);
+}
+
+.systray-container {
+  height: var(--height);
+}
+
+.systray-icons {
+  height: var(--height);
+  display: flex;
+  position: relative;
+  width: 4ch;
+  transition: width 0s ease;
+  & > .systray-icon-wrapper {
+    position: absolute;
+    top: 0; 
+    left: 0;
+    opacity: 0;
+    transition: opacity 0s ease;
+  }
+  & > i {
+    position: absolute;
+    right: 0;
+    transform: translateX(10%);
+    transition: color 1s ease;
+  }
+}
+
+.systray-icons:hover {
+    width: var(--systray-width, fit-content);
+    transition: width 1s cubic-bezier(1, -0.04, 0.255, 1);
+    & > .systray-icon-wrapper {
+        position: initial;
+        opacity: 1;
+        transition: opacity 1.8s cubic-bezier(0.99, -0.06, 0.21, 0.14);
+    }
+    & > i {
+        color: var(--ctp-mauve)
+    }
+}
+
+.systray-icon-wrapper:hover::after {
+    content: attr(data-tooltip);
+    height: var(--height);
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translateX(calc(-100% - var(--margin)));
+    background: var(--ctp-surface0);
+    color: var(--ctp-text);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+.systray-icon-wrapper > .systray-icon {
+    filter: hue-rotate(-20deg) brightness(0.9) contrast(1.3);
+}

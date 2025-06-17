@@ -3,7 +3,7 @@ import React, {
   useEffect,
 } from 'https://esm.sh/react@18?dev';
 import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
-import * as zebar from 'https://esm.sh/zebar@2';
+import * as zebar from 'https://esm.sh/zebar@3.1.0';
 
 // Utils
 import { 
@@ -18,6 +18,9 @@ import {
     setBrigthness,
 } from './utils/windows.js';
 
+// Config
+import { hide_icons } from './config/systray.js';
+
 const message = "Wellcome FeraxHp!"
 const providers = zebar.createProviderGroup({
   network: { type: 'network', refreshInterval: 500 },
@@ -28,6 +31,7 @@ const providers = zebar.createProviderGroup({
   memory: { type: 'memory' },
   weather: { type: 'weather' },
   song: { type: 'media' },
+  systray: { type: 'systray' },
 });
 
 createRoot(document.getElementById('root')).render(<App />);
@@ -58,6 +62,7 @@ function App() {
         {output.cpu     && ( <Cpu output={output}/>)}
         {output.battery && ( <Battery output={output} />)}
         {output.weather && ( <WeatherIcon output={output} />)}
+        {output.systray && ( <Systray output={output} />)}
         {output.glazewm && ( <Glazewm output={output}/>)}
         <BrightnessButton zebar={zebar}/>
       </div>
@@ -279,3 +284,50 @@ const BrightnessButton = ({zebar}) => {
       className={'sbtn ' + color(br)}
     > {br.toString().padStart(2, '0')} </button>
 };
+
+function Systray({ output }) {
+  if (!output.systray) return null;
+  
+    let icons = output.systray.icons.filter(e => hide_icons.every(i => e.id !== i));
+  
+  return (
+    <div 
+        className="systray-container"
+        style={{ 
+            "--systray-width": `calc(${icons.length + 1.2} * 22px)` 
+        }}
+    >
+      <div className="systray-icons sbtn">
+              {
+                icons.map(icon => {
+                    return (
+                        <div
+                            className="systray-icon-wrapper"
+                            key={icon.id}
+                            data-tooltip={icon.tooltip}
+                        >
+                            <img
+                                className="systray-icon"
+                                src={icon.iconUrl}
+                                onClick={e => {
+                                    e.preventDefault();
+                                    output.systray.onLeftClick(icon.id);
+                                }}
+                                onContextMenu={e => {
+                                    e.preventDefault();
+                                    output.systray.onRightClick(icon.id);
+                                }}
+                                onAuxClick={(e) => {
+                                    e.preventDefault();
+                                    navigator.clipboard.writeText(icon.id);
+                                }}
+                            />
+                        </div>
+                    )
+                })
+            }
+        <i className="nf nf-oct-stack"></i>
+      </div>
+    </div>
+  );
+}
