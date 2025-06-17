@@ -1,0 +1,61 @@
+{
+  "$schema": "https://github.com/glzr-io/zebar/raw/v3.1.0/resources/zpack-schema.json",
+  "name": "feraxhp",
+  "version": "0.0.0",
+  "description": "",
+  "tags": [],
+  "previewImages": [],
+  "repositoryUrl": "",
+  "widgets": [
+    {
+      "name": "feraxhp",
+      "htmlPath": "./index.html",
+      "zOrder": "normal",
+      "shownInTaskbar": false,
+      "focused": false,
+      "resizable": false,
+      "transparent": true,
+      "includeFiles": [
+        "**/**"
+      ],
+      "caching": {
+        "defaultDuration": 604800,
+        "rules": []
+      },
+      "privileges": {
+        "shellCommands": [
+          {
+            "program": "powershell.exe",
+            "argsRegex": ".*"
+          },
+          {
+            "program": "YouTube Music.exe",
+            "argsRegex": ".*"
+          },
+          {
+            "program": "mbr.exe",
+            "argsRegex": ".*"
+          }
+        ]
+      },
+      "presets": [
+        {
+          "name": "default",
+          "anchor": "top_left",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "width": "100%",
+          "height": "28px",
+          "monitorSelection": {
+            "type": "all"
+          },
+          "dockToEdge": {
+            "enabled": true,
+            "edge": null,
+            "windowMargin": "0px"
+          }
+        }
+      ]
+    }
+  ]
+}
