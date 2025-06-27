@@ -3,7 +3,7 @@ import React, {
   useEffect,
 } from 'https://esm.sh/react@18?dev';
 import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
-import * as zebar from 'https://esm.sh/zebar@3.1.0';
+import * as zebar from 'https://esm.sh/zebar@3.1.1';
 
 // Utils
 import { 

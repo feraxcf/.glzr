@@ -3,7 +3,7 @@ general:
   # another application). Here we are running a batch script to start Zebar.
   startup_commands: [
     'shell-exec zebar', 
-    'shell-exec nircmd win trans class Shell_TrayWnd 256'
+    # 'shell-exec nircmd win trans class Shell_TrayWnd 256'
   ]
 
   # Whether to automatically focus windows underneath the cursor.
