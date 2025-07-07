@@ -88,19 +88,19 @@ window_rules:
     match:
       # Ignores any Zebar windows.
       - window_process: { equals: 'zebar' }
-      - window_process: { equals: 'RocketLeague' }
-      - window_process: { equals: 'GTA5_Enhanced' }
 
       # Ignores picture-in-picture windows for browsers.
       - window_title: { regex: '[Pp]icture.in.[Pp]icture' }
         window_class: { regex: 'Chrome_WidgetWin_1|MozillaDialogClass' }
 
       # Ignore rules for various 3rd-party apps.
+      - window_process: { equals: 'GTA5_Enhanced' }
+      - window_process: { equals: 'RocketLeague' }
       - window_process: { equals: 'PowerToys.PowerAccent' }
-      - window_title: { equals: 'Command Palette' }
-      - window_title: { regex: 'Extension:.*Zen Browser.*' }
       - window_process: { equals: 'Lively' }
         window_class: { regex: 'HwndWrapper*' }
+      - window_title: { regex: 'Extension:.*Zen Browser.*' }
+      - window_title: { equals: 'Command Palette' }
 
 binding_modes:
   # When enabled, all keybindings are disabled except for alt+shift+p which
