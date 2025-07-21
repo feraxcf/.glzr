@@ -9,6 +9,7 @@
     --height: 20px;
     
     --text: var(--ctp-text);
+    --icon: light-dark(var(--text), var(--ctp-surface2));
 }
 
 :root[theme="light"] {
@@ -18,13 +19,13 @@
 * { text-wrap-mode: nowrap; }
 
 i {
-  color: var(--ctp-surface2);
+  color: var(--icon);
   margin-right: var(--margin);
 }
 
 body {
   color: var(--ctp-mauve);
-  font-family: ui-monospace, monospace;
+  font-family: jetbrains-mono, ui-monospace, monospace;
   font-size: var(--font-sise);
   overflow: hidden;
 }
@@ -59,7 +60,7 @@ body,
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  color: ligth-dark(var(--ctp-rosewater), var(--ctp-mauve));
+  color: ligth-dark(var(--ctp-mauve), var(--ctp-rosewater));
 }
 
 .right {
@@ -307,7 +308,7 @@ body,
   }
   & > i {
     position: absolute;
-    color: light-dark(black, var(--ctp-text));
+    color: light-dark(black, var(--icon));
     right: 0;
     transform: translateX(10%);
     transition: color 1s ease;
