@@ -111,7 +111,7 @@ body,
 
 .surface,
 .sbtn {
-  background: light-dark(var(--ctp-surface0), var(--ctp-surface1));
+  background: light-dark(var(--ctp-surface1), var(--ctp-surface0));
   color: var(--text);
   border-radius: 2px;
   line-height: 1;
@@ -307,6 +307,7 @@ body,
   }
   & > i {
     position: absolute;
+    color: light-dark(black, var(--ctp-text));
     right: 0;
     transform: translateX(10%);
     transition: color 1s ease;
