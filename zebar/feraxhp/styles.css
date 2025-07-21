@@ -7,6 +7,12 @@
     --app-height: 28px;
     --height-max: 26px;
     --height: 20px;
+    
+    --text: var(--ctp-text);
+}
+
+:root[theme="light"] {
+    font-weight: bolder;
 }
 
 * { text-wrap-mode: nowrap; }
@@ -39,7 +45,7 @@ body,
   height: 100%;
   padding: 0 var(--margin-min);
   
-  background: rgba(var(--ctp-crust-rgb), 1);
+  background-color: light-dark(var(--ctp-base), var(--ctp-crust));
 }
 
 .left,
@@ -53,7 +59,7 @@ body,
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  color: var(--ctp-rosewater);
+  color: ligth-dark(var(--ctp-rosewater), var(--ctp-mauve));
 }
 
 .right {
@@ -105,8 +111,8 @@ body,
 
 .surface,
 .sbtn {
-  background: var(--ctp-surface0);
-  color: var(--ctp-text);
+  background: light-dark(var(--ctp-surface0), var(--ctp-surface1));
+  color: var(--text);
   border-radius: 2px;
   line-height: 1;
   padding: 4px 8px;
@@ -129,7 +135,7 @@ body,
 
 .surface {
     position: relative;
-    background-color: var(--ctp-base);
+    background-color: light-dark(var(--ctp-crust), var(--ctp-base));
 }
 
 .surface i {
