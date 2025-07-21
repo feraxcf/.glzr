@@ -59,9 +59,9 @@ function App() {
       <div className="right">
         {output.memory  && ( <Memory output={output}/>)}
         {output.cpu     && ( <Cpu output={output}/>)}
-        {output.battery && ( <Battery output={output} />)}
         {output.weather && ( <WeatherIcon output={output} />)}
         {output.network && ( <Network output={ output}/>)}
+        {output.battery && ( <Battery output={output} />)}
         {output.systray && ( <Systray output={output} />)}
         {output.glazewm && ( <Glazewm output={output}/>)}
         {/* <BrightnessButton zebar={zebar}/> */}
@@ -177,10 +177,9 @@ function getBatteryIcon(level) {
 
 function Battery({ output: { battery } }) {
     const { chargePercent, isCharging } = battery;
-    return <div className="battery">
+    return <div className="battery surface" data-tooltip={`${Math.round(chargePercent)}%`}>
         {isCharging && ( <i className="bt nf nf-md-power_plug charging-icon"></i> )}
         <i className={getBatteryIcon(chargePercent)}></i>
-        {Math.round(chargePercent)}%
     </div>
 }
 
