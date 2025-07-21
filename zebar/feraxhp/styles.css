@@ -327,7 +327,7 @@ body,
     position: absolute;
     left: 0;
     top: 0;
-    transform: translateX(calc(-100% - var(--margin)));
+    transform: translateX(calc(-100% - var(--margin-min)));
     background: var(--ctp-surface0);
     color: var(--ctp-text);
     padding: 4px 8px;
