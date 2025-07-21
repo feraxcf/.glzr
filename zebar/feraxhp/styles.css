@@ -103,6 +103,7 @@ body,
   cursor: pointer;
 }
 
+.surface,
 .sbtn {
   background: var(--ctp-surface0);
   color: var(--ctp-text);
@@ -114,6 +115,7 @@ body,
   cursor: pointer;
 }
 
+.surface,
 .sbtn,
 .user,
 .logo,
@@ -125,6 +127,14 @@ body,
 .battery,
 .weather { user-select: none; }
 
+.surface {
+    position: relative;
+    background-color: var(--ctp-base);
+}
+
+.surface i {
+    margin: 0;
+}
 
 .binding-mode, 
 .tiling-direction  { color: var(--ctp-green); }
@@ -310,6 +320,7 @@ body,
     }
 }
 
+.surface[data-tooltip]:hover::after,
 .systray-icon-wrapper:hover::after {
     content: attr(data-tooltip);
     height: var(--height);

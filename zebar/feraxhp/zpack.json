@@ -51,8 +51,8 @@
           },
           "dockToEdge": {
             "enabled": true,
-            "edge": null,
-            "windowMargin": "0px"
+            "edge": "top",
+            "windowMargin": "2px"
           }
         }
       ]

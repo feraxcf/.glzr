@@ -57,14 +57,14 @@ function App() {
       </div>
 
       <div className="right">
-        {output.network && ( <Network output={ output}/>)}
         {output.memory  && ( <Memory output={output}/>)}
         {output.cpu     && ( <Cpu output={output}/>)}
         {output.battery && ( <Battery output={output} />)}
         {output.weather && ( <WeatherIcon output={output} />)}
+        {output.network && ( <Network output={ output}/>)}
         {output.systray && ( <Systray output={output} />)}
         {output.glazewm && ( <Glazewm output={output}/>)}
-        <BrightnessButton zebar={zebar}/>
+        {/* <BrightnessButton zebar={zebar}/> */}
       </div>
     </div>
   );
@@ -105,6 +105,7 @@ function getWifiIconClass(strength) {
 
 function Network({ output: { network } }) {
     const type = network.defaultInterface?.type ?? "default";
+    // if (!network.defaultGateway) return null;
     const strength = network.defaultGateway?.signalStrength ?? 0;
     
     const icons = {
@@ -119,10 +120,9 @@ function Network({ output: { network } }) {
         default: (network) => "NN.A",
     }
     
-    return <div className="network">
-        {(type in icons) ? icons[type](strength) : icons.default(strength)}
-        {(type in name) ? name[type](network) : icons.default(network)}
-    </div>
+    return <div className="network surface"
+        data-tooltip={(type in name) ? name[type](network) : icons.default(network)}
+    >{(type in icons) ? icons[type](strength) : icons.default(strength)}</div>
 }
 
 // Memory
