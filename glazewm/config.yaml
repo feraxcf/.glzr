@@ -20,7 +20,7 @@ general:
     # Trigger for cursor jump:
     # - 'monitor_focus': Jump when focus changes between monitors.
     # - 'window_focus': Jump when focus changes between windows.
-    trigger: 'window_focus'
+    trigger: 'monitor_focus'
 
 gaps:
   # Gap between adjacent windows.
@@ -62,7 +62,7 @@ window_behavior:
       centered: true
 
       # Whether to show floating windows as always on top.
-      shown_on_top: false
+      shown_on_top: true
 
     fullscreen:
       # Maximize the window if possible. If the window doesn't have a
@@ -123,13 +123,13 @@ keybindings:
 
   # Move focused window in a given direction.
   - commands: ['move --direction left']
-    bindings: ['alt+shift+h', 'alt+shift+left']
+    bindings: ['alt+shift+left']
   - commands: ['move --direction right']
-    bindings: ['alt+shift+l', 'alt+shift+right']
+    bindings: ['alt+shift+right']
   - commands: ['move --direction up']
-    bindings: ['alt+shift+k', 'alt+shift+up']
+    bindings: ['alt+shift+up']
   - commands: ['move --direction down']
-    bindings: ['alt+shift+j', 'alt+shift+down']
+    bindings: ['alt+shift+down']
 
   # Resize focused window by a percentage or pixel amount.
   - commands: ['resize --width -2%']
@@ -224,14 +224,14 @@ keybindings:
 
   # Move the focused window's parent workspace to a monitor in a given
   # direction.
-  # - commands: ['move-workspace --direction left']
-  #   bindings: ['alt+shift+a']
-  # - commands: ['move-workspace --direction right']
-  #   bindings: ['alt+shift+f']
-  # - commands: ['move-workspace --direction up']
-  #   bindings: ['alt+shift+d']
-  # - commands: ['move-workspace --direction down']
-  #   bindings: ['alt+shift+s']
+  - commands: ['move-workspace --direction left']
+    bindings: ['alt+shift+j']
+  - commands: ['move-workspace --direction right']
+    bindings: ['alt+shift+l']
+  - commands: ['move-workspace --direction up']
+    bindings: ['alt+shift+i']
+  - commands: ['move-workspace --direction down']
+    bindings: ['alt+shift+k']
 
   # Move focused window to a workspace defined in `workspaces` config.
   - commands: ['move --workspace 1', 'focus --workspace 1']
@@ -252,14 +252,35 @@ keybindings:
     bindings: ['alt+shift+8']
   - commands: ['move --workspace 9', 'focus --workspace 9']
     bindings: ['alt+shift+9']
-
+  
+  # Move focused window to a workspace defined in `workspaces` config.
+  # without focusing it 
+  - commands: ['move --workspace 1']
+    bindings: ['ctrl+alt+1']
+  - commands: ['move --workspace 2']
+    bindings: ['ctrl+alt+2']
+  - commands: ['move --workspace 3']
+    bindings: ['ctrl+alt+3']
+  - commands: ['move --workspace 4']
+    bindings: ['ctrl+alt+4']
+  - commands: ['move --workspace 5']
+    bindings: ['ctrl+alt+5']
+  - commands: ['move --workspace 6']
+    bindings: ['ctrl+alt+6']
+  - commands: ['move --workspace 7']
+    bindings: ['ctrl+alt+7']
+  - commands: ['move --workspace 8']
+    bindings: ['ctrl+alt+8']
+  - commands: ['move --workspace 9']
+    bindings: ['ctrl+alt+9']
+  
   # Open programs
   # Launch CMD terminal. Alternatively, use `shell-exec wt` or
   # `shell-exec %ProgramFiles%/Git/git-bash.exe` to start Windows
   # Terminal and Git Bash respectively.
-  - commands: ['shell-exec s:/Program Files/Git/bin/bash.exe -i -l']
+  - commands: ['shell-exec c:/Program Files/Git/bin/bash.exe -i -l']
     bindings: ['ctrl+alt+t']
     
   - commands: ['shell-exec zed']
-    bindings: ['ctrl+alt+z']
+    bindings: ['ctrl+.']
     
