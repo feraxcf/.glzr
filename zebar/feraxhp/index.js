@@ -168,11 +168,11 @@ function WeatherIcon({ output: { weather: { status, celsiusTemp } } }) {
 
 // Battery
 function getBatteryIcon(level) {
-  if (level > 79) return "nf max -nf-fa-battery_4";
-  if (level > 49) return "nf med -nf-fa-battery_3";
-  if (level > 29) return "nf some -nf-fa-battery_2";
-  if (level >  9) return "nf bad -nf-fa-battery_1";
-  return "nf worse nf-fa-battery_0"
+  if (level > 79) return "nf bat max -nf-fa-battery_4";
+  if (level > 49) return "nf bat med -nf-fa-battery_3";
+  if (level > 29) return "nf bat some -nf-fa-battery_2";
+  if (level >  9) return "nf bat bad -nf-fa-battery_1";
+  return "nf bat worse nf-fa-battery_0"
 }
 
 function Battery({ output: { battery } }) {
@@ -265,7 +265,7 @@ const BrightnessButton = ({zebar}) => {
     };
   
   const style = {
-      fontFamily: ['Fira Mono', 'JetBrains Mono', 'Consolas', 'Menlo', 'monospace'],
+      fontFamily: ['JetBrains Mono', 'Consolas', 'Menlo', 'monospace'],
   }
   
   const color = (lvl) => {
