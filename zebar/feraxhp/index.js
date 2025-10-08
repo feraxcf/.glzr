@@ -64,7 +64,7 @@ function App() {
         {output.battery && ( <Battery output={output} />)}
         {output.systray && ( <Systray output={output} />)}
         {output.glazewm && ( <Glazewm output={output}/>)}
-        {/* <BrightnessButton zebar={zebar}/> */}
+        <BrightnessButton zebar={zebar}/>
       </div>
     </div>
   );
