@@ -46,7 +46,7 @@ body,
   height: 100%;
   padding: 0 var(--margin-min);
   
-  background-color: light-dark(var(--ctp-base), var(--ctp-crust));
+  background-color: light-dark(var(--ctp-crust), var(--ctp-crust));
 }
 
 .left,
@@ -112,7 +112,7 @@ body,
 
 .surface,
 .sbtn {
-  background: light-dark(var(--ctp-surface1), var(--ctp-surface0));
+  background: light-dark(var(--ctp-base), var(--ctp-surface0));
   color: var(--text);
   border-radius: 2px;
   line-height: 1;
@@ -136,7 +136,7 @@ body,
 
 .surface {
     position: relative;
-    background-color: light-dark(var(--ctp-crust), var(--ctp-base));
+    background-color: light-dark(var(--ctp-surface0), var(--ctp-base));
 }
 
 .surface i {
