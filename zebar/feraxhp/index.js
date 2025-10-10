@@ -25,8 +25,8 @@ const message = "Wellcome FeraxHp!"
 const providers = zebar.createProviderGroup({
   network: { type: 'network', refreshInterval: 500 },
   glazewm: { type: 'glazewm' },
-  cpu: { type: 'cpu', refreshInterval: 2500 },
-  date: { type: 'date', formatting: 'EEE d MMM t' },
+  cpu: { type: 'cpu', refreshInterval: 500 },
+  date: { type: 'date', formatting: 'EEE dd MMM HH:mm:ss' },
   battery: { type: 'battery', refreshInterval: 100 },
   memory: { type: 'memory' },
   weather: { type: 'weather' },
@@ -287,7 +287,7 @@ const BrightnessButton = ({zebar}) => {
 function Systray({ output }) {
   if (!output.systray) return null;
   
-    let icons = output.systray.icons.filter(e => hide_icons.every(i => e.id !== i));
+  let icons = output.systray.icons.filter(e => hide_icons.every(i => e.id !== i));
   
   return (
     <div 
