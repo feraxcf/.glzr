@@ -36,10 +36,48 @@ const providers = zebar.createProviderGroup({
 
 createRoot(document.getElementById('root')).render(<App />);
 
+let _runCommand = () => { };
+let movementBuffer = 0;
+// Guarda el valor del buffer la última vez que se disparó una acción.
+let lastTriggerBuffer = 0; 
+let resetTimer = null;
+
+// Aumenta este valor para que se necesite un swipe más largo para cambiar de workspace.
+// Un buen valor puede estar entre 8 y 15. ¡Experimenta!
+const SENSITIVITY_THRESHOLD = 10;
+// Tiempo para resetear después de que el gesto termina.
+const GESTURE_RESET_TIMEOUT = 250; 
+
+const listener = (event) => {
+    clearTimeout(resetTimer);
+    
+    movementBuffer += event.deltaX < 0 ? 1 : -1;
+    console.log(`Buffer: ${movementBuffer}, Last Trigger: ${lastTriggerBuffer}`);
+
+    // Umbral hacia la derecha.
+    if (movementBuffer - lastTriggerBuffer >= SENSITIVITY_THRESHOLD) {
+        _runCommand('focus --next-workspace');
+        lastTriggerBuffer += SENSITIVITY_THRESHOLD;
+    } 
+    
+    // Umbral hacia la izquierda.
+    else if (movementBuffer - lastTriggerBuffer <= -SENSITIVITY_THRESHOLD) {
+        _runCommand('focus --prev-workspace');
+        lastTriggerBuffer -= SENSITIVITY_THRESHOLD;
+    }
+    
+    resetTimer = setTimeout(() => {
+        movementBuffer = 0;
+        lastTriggerBuffer = 0;
+    }, GESTURE_RESET_TIMEOUT);
+};
+
+document.addEventListener('wheel', listener);
 function App() {
   const [output, setOutput] = useState(providers.outputMap);
   
   useEffect(() => { providers.onOutput(() => setOutput(providers.outputMap)); }, []);
+  useEffect(() => { _runCommand = providers.outputMap.glazewm?.runCommand ?? (() => {}); }, [output.glazewm]);
 
   return (
     <div className="app">

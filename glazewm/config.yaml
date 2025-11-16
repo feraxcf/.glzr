@@ -281,6 +281,6 @@ keybindings:
   - commands: ['shell-exec c:/Program Files/Git/bin/bash.exe -i -l']
     bindings: ['ctrl+alt+t']
     
-  - commands: ['shell-exec zed']
+  - commands: ['shell-exec zed.exe']
     bindings: ['ctrl+.']
     
